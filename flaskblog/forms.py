@@ -14,7 +14,6 @@ class RegisterationForm(FlaskForm):
   
   def validate_user(self,username):
     userr = User.query.filter_by(username = username.data).first()
-    print("UserName***********************:",user)
     if userr:
       raise ValidationError(f'This UserName is already taken, Please choose another username')
   

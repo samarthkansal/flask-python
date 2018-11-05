@@ -2,7 +2,7 @@ from flask import render_template,url_for,flash,redirect
 from flaskblog.forms import RegisterationForm,LoginForm   
 from flaskblog import app,db,bcrypt
 from flaskblog.model import User
-from flask_login import login_user,logout_user
+from flask_login import login_user,logout_user,current_user
 
 
 info = [{
@@ -45,9 +45,9 @@ def login():
     if user and bcrypt.check_password_hash(user.password,form.password.data):
       login_user(user,remember=form.remember.data)
       return redirect(url_for('home'))
-    else:
+    else: 
       flash(f"Login Unsuccessful! Invalid Email Id or Password", 'danger')
-  return render_template('login.html',title='Login',form = form)
+  return render_template('login.html',title='Login', form = form)
     
 @app.route("/logout")
 def logout():
