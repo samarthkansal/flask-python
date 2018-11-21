@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField,SubmitField,BooleanField
 from wtforms.validators import DataRequired,Length,EqualTo,Email, ValidationError
 from flaskblog.model import User,Post
@@ -32,10 +33,10 @@ class LoginForm(FlaskForm):
 class UpdateInformation(FlaskForm):
   username = StringField('UserName',validators=[DataRequired(),Length(min=2,max=20)])
   email = StringField('Email',validators=[DataRequired(),Email()])
+  image = FileField('Update Profile Picture' , validators = [FileAllowed('png','jpg')])
   update = SubmitField('Update')
   
-  def validate_user(self,username):
-    print ("I am in validation of username:::")
+  def validate_username(self,username):
     if current_user.username != username.data:
       userr = User.query.filter_by(username = username.data).first()
       if userr:
@@ -43,8 +44,8 @@ class UpdateInformation(FlaskForm):
   
   def validate_email(self,email):
     if current_user.email != email.data:
-      email = User.query.filter_by(email = email.data).first()
-      if email:
+      emaill = User.query.filter_by(email = email.data).first()
+      if emaill:
         raise ValidationError(f'This Email is already registered with us, Please User Different One')
 
 
