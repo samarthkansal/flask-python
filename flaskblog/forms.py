@@ -33,7 +33,7 @@ class LoginForm(FlaskForm):
 class UpdateInformation(FlaskForm):
   username = StringField('UserName',validators=[DataRequired(),Length(min=2,max=20)])
   email = StringField('Email',validators=[DataRequired(),Email()])
-  image = FileField('Update Profile Picture' , validators = [FileAllowed('png','jpg')])
+  image = FileField('Update Profile Picture' , validators = [FileAllowed(['png','jpg'])])
   update = SubmitField('Update')
   
   def validate_username(self,username):

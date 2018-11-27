@@ -1,4 +1,5 @@
 import secrets
+import os
 from flask import render_template,url_for,flash,redirect,request
 from flaskblog.forms import RegisterationForm,LoginForm, UpdateInformation  
 from flaskblog import app,db,bcrypt
@@ -58,12 +59,11 @@ def logout():
   return redirect(url_for('login'))
 
 def save_pic(raw_pic):
-  print ("RAW PIC_VARIABLE:::::::::::::::::::::::::::::::::::::::::::::",raw_pic)
   pic_hex = secrets.token_hex(8)
   _ , pic_extn = os.path.splitext(raw_pic.filename)
   final_pic_name = pic_hex + pic_extn
-  final_pic_path_name = os.path.join(app.root_path,"static/profile_pics",final_pic_name)
-  raw_pic.save(final_pic_name)  
+  final_pic_path_name = os.path.join(app.root_path,"static\profile_pics",final_pic_name)
+  raw_pic.save(final_pic_path_name)  
   return final_pic_name
 
 @app.route("/account",methods = ['GET','POST'])
@@ -73,8 +73,9 @@ def account():
   print(form.validate_on_submit())
   print("form.errors:",form.errors)
   if form.validate_on_submit():
-    final_pic = save_pic(current_user.image.data)
-    current_user.image_file = final_pic
+    if form.image.data:
+      final_pic = save_pic(form.image.data)
+      current_user.image_file = final_pic
     current_user.username = form.username.data 
     current_user.email = form.email.data
     db.session.commit()

@@ -41,7 +41,9 @@
             {{form.image.label()}}
             {{form.image(class="form-control-file")}}
             {% if form.image.errors %}
-              <span class= "text-danger">{{form.errors}}</span>
+              { % for error in form.image.erros % }
+                <span class= "text-danger">{{error}}</span>
+              { % endfor % }
             {% endif %}
           </div>
 	    </fieldset>
